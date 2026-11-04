@@ -1,0 +1,820 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Swing &amp; Sweet – Support</title>
+<meta name="description" content="Help for Swing & Sweet, the sound leveler for DJs who play vintage jazz and blues for dancing: getting started, sources, the built-in player, questions and contact.">
+<link rel="icon" href="images/icon.png">
+<style>
+  :root {
+    --bg: #f6f2ea;
+    --surface: #fffdf8;
+    --text: #2a2622;
+    --muted: #6d655c;
+    --rule: #e2d9cb;
+    --accent: #b8620a;
+    --accent-soft: #f4e3cc;
+    --ear: #2f6fd6;
+    --ear-soft: #dde8fb;
+    --badge-bg: #ff9424;
+    --badge-text: #1a1206;
+    --shadow: 0 1px 2px rgba(60, 40, 10, .08), 0 10px 30px rgba(60, 40, 10, .10);
+    --hero-bg: #1b1c1e;
+    --hero-text: #f1ece3;
+    --hero-muted: #a79f92;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #17181a; --surface: #1f2123; --text: #e9e4da; --muted: #a09889; --rule: #34363a;
+      --accent: #ffa64d; --accent-soft: #3a2a17; --ear: #7fb0ff; --ear-soft: #1c2a40;
+      --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 10px 30px rgba(0, 0, 0, .4);
+      --hero-bg: #111214;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #17181a; --surface: #1f2123; --text: #e9e4da; --muted: #a09889; --rule: #34363a;
+    --accent: #ffa64d; --accent-soft: #3a2a17; --ear: #7fb0ff; --ear-soft: #1c2a40;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 10px 30px rgba(0, 0, 0, .4);
+    --hero-bg: #111214;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 64px; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); }
+  img { max-width: 100%; height: auto; }
+  .serif { font-family: ui-serif, "New York", Georgia, serif; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
+
+  /* Top bar */
+  .top {
+    position: sticky; top: 0; z-index: 10;
+    background: color-mix(in srgb, var(--hero-bg) 88%, transparent);
+    backdrop-filter: saturate(160%) blur(14px); -webkit-backdrop-filter: saturate(160%) blur(14px);
+    border-bottom: 1px solid rgba(255, 255, 255, .06);
+  }
+  .top .wrap { display: flex; align-items: center; gap: 18px; height: 54px; }
+  .brand { display: flex; align-items: center; gap: 9px; color: var(--hero-text); text-decoration: none; flex: none; }
+  .brand img { width: 28px; height: 28px; }
+  .brand span { font: italic 600 18px/1 ui-serif, "New York", Georgia, serif; }
+  .top nav { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; margin-left: auto; }
+  .top nav::-webkit-scrollbar { display: none; }
+  .top nav a {
+    color: var(--hero-muted); text-decoration: none; font-size: 13.5px; white-space: nowrap;
+    padding: 6px 10px; border-radius: 7px;
+  }
+  .top nav a:hover { color: var(--hero-text); background: rgba(255, 255, 255, .07); }
+
+  /* Hero */
+  .hero {
+    background:
+      radial-gradient(900px 420px at 78% 40%, rgba(255, 148, 36, .20), transparent 65%),
+      radial-gradient(600px 300px at 10% 0%, rgba(255, 148, 36, .07), transparent 70%),
+      var(--hero-bg);
+    color: var(--hero-text); overflow: hidden;
+  }
+  .hero .wrap {
+    display: grid; grid-template-columns: 1.05fr .95fr; gap: 40px; align-items: center;
+    padding-top: 64px; padding-bottom: 72px;
+  }
+  .eyebrow {
+    color: #ffa64d; font-size: 12.5px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+    margin: 0 0 14px;
+  }
+  .hero h1 { font: italic 600 clamp(38px, 6vw, 58px)/1.05 ui-serif, "New York", Georgia, serif; margin: 0 0 18px; }
+  .hero .lede { color: var(--hero-muted); font-size: 18.5px; margin: 0 0 28px; max-width: 34em; }
+  .hero .lede strong { color: var(--hero-text); font-weight: 600; }
+  .buttons { display: flex; flex-wrap: wrap; gap: 10px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px; padding: 11px 18px; border-radius: 10px;
+    font-weight: 600; font-size: 15px; text-decoration: none;
+  }
+  .btn.primary { background: #ff9424; color: #1a1206; box-shadow: 0 0 0 1px #ffb45f inset, 0 6px 20px rgba(255, 148, 36, .35); }
+  .btn.primary:hover { background: #ffa443; }
+  .btn.ghost { color: var(--hero-text); border: 1px solid rgba(255, 255, 255, .18); }
+  .btn.ghost:hover { background: rgba(255, 255, 255, .06); }
+  .hero .shot { position: relative; justify-self: center; }
+  .hero .shot img {
+    display: block; width: 420px; border-radius: 16px;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, .6), 0 0 0 1px rgba(255, 255, 255, .06);
+    transform: perspective(1400px) rotateY(-7deg) rotateX(2deg);
+  }
+  .facts { display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 30px 0 0; padding: 0; list-style: none;
+           color: var(--hero-muted); font-size: 14px; }
+  .facts li::before { content: "●"; color: #ffa64d; font-size: 9px; margin-right: 8px; vertical-align: 2px; }
+
+  /* Sections */
+  section { padding: 72px 0 8px; }
+  h2 { font: 600 clamp(28px, 4vw, 36px)/1.15 ui-serif, "New York", Georgia, serif; margin: 0 0 10px; }
+  .kicker { color: var(--accent); font-size: 12.5px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; margin: 0 0 10px; }
+  .intro { color: var(--muted); font-size: 18px; max-width: 40em; margin: 0 0 32px; }
+  h3 { font-size: 19px; line-height: 1.3; margin: 0 0 6px; }
+  p { margin: 0 0 14px; }
+  .muted { color: var(--muted); }
+  kbd {
+    font: 600 12.5px/1 -apple-system, sans-serif; padding: 3px 6px; border-radius: 5px;
+    background: var(--surface); border: 1px solid var(--rule); border-bottom-width: 2px; white-space: nowrap;
+  }
+  .ui { font-weight: 600; }
+
+  .grid { display: grid; gap: 16px; }
+  .g3 { grid-template-columns: repeat(3, 1fr); }
+  .g2 { grid-template-columns: repeat(2, 1fr); }
+  .card {
+    background: var(--surface); border: 1px solid var(--rule); border-radius: 16px;
+    padding: 22px 22px 8px; box-shadow: var(--shadow);
+  }
+  .card .ico {
+    width: 40px; height: 40px; border-radius: 11px; display: grid; place-items: center; margin-bottom: 14px;
+    background: var(--accent-soft); color: var(--accent);
+  }
+  .card .ico svg { width: 22px; height: 22px; }
+  .card p { color: var(--muted); font-size: 15px; }
+
+  figure { margin: 0; }
+  figure img { display: block; border-radius: 14px; box-shadow: var(--shadow); }
+  figcaption { color: var(--muted); font-size: 13.5px; margin-top: 10px; }
+  .wide img { width: 100%; }
+
+  /* Getting started */
+  .steps { counter-reset: step; list-style: none; padding: 0; margin: 0; }
+  .steps > li { counter-increment: step; position: relative; padding: 0 0 18px 46px; }
+  .steps > li::before {
+    content: counter(step); position: absolute; left: 0; top: -1px;
+    width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center;
+    background: var(--badge-bg); color: var(--badge-text); font-weight: 700; font-size: 14px;
+  }
+  .split { display: grid; grid-template-columns: 1fr 384px; gap: 44px; align-items: start; }
+  .split.left { grid-template-columns: 384px 1fr; }
+
+  /* Panel tour */
+  .tour { display: grid; grid-template-columns: 384px 1fr; gap: 44px; align-items: start; }
+  .tour .shot { position: sticky; top: 76px; }
+  .tour .shot .frame { position: relative; }
+  .tour .shot img { width: 384px; display: block; border-radius: 14px; box-shadow: var(--shadow); }
+  .badge {
+    position: absolute; transform: translate(-50%, -50%);
+    width: 20px; height: 20px; border-radius: 50%;
+    background: var(--badge-bg); color: var(--badge-text);
+    font: 700 11px/20px -apple-system, sans-serif; text-align: center;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, .55);
+  }
+  .legend { columns: 2; column-gap: 28px; }
+  .item { display: grid; grid-template-columns: 24px 1fr; gap: 0 10px; margin: 0 0 16px; break-inside: avoid; }
+  .item .n {
+    width: 22px; height: 22px; border-radius: 50%; margin-top: 2px;
+    background: var(--badge-bg); color: var(--badge-text);
+    font: 700 11px/22px -apple-system, sans-serif; text-align: center;
+  }
+  .item h4 { margin: 0; font-size: 15.5px; }
+  .item p { margin: 2px 0 0; font-size: 14.5px; color: var(--muted); }
+
+  /* Sources */
+  .sources { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .source { background: var(--surface); border: 1px solid var(--rule); border-radius: 16px; padding: 20px 22px 6px; box-shadow: var(--shadow); }
+  .source header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .source h3 { margin: 0; }
+  .pill { font-size: 11.5px; font-weight: 700; letter-spacing: .04em; padding: 3px 9px; border-radius: 999px; white-space: nowrap; }
+  .pill.full { background: rgba(52, 199, 89, .15); color: #23964a; }
+  .pill.sound { background: var(--accent-soft); color: var(--accent); }
+  .pill.try { background: var(--ear-soft); color: var(--ear); }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .pill.full { color: #5ad37f; } }
+  :root[data-theme="dark"] .pill.full { color: #5ad37f; }
+  .source p, .source li { font-size: 15px; color: var(--muted); }
+  .source ul { padding-left: 1.1em; margin: 0 0 14px; }
+
+  /* Player */
+  .player-hero { margin: 8px 0 44px; }
+  .player-hero img { width: 100%; border-radius: 14px; box-shadow: 0 30px 70px rgba(0, 0, 0, .28), 0 0 0 1px rgba(0, 0, 0, .1); }
+  .colours { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 0 0 48px; }
+  .colour { border-radius: 14px; padding: 18px 20px 6px; border: 1px solid var(--rule); background: var(--surface); }
+  .colour.room { border-left: 5px solid #ff9424; }
+  .colour.ear { border-left: 5px solid #4f8fff; }
+  .colour h3 { font-size: 17px; }
+  .colour p { color: var(--muted); font-size: 15px; }
+  .feature { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; margin: 0 0 56px; }
+  .feature.flip > figure { order: 2; }
+  .feature.full { grid-template-columns: 1fr; gap: 20px; }
+  .feature .text p, .feature .text li { color: var(--muted); }
+  .feature .text strong { color: var(--text); }
+  .feature .text ul { padding-left: 1.1em; }
+  .feature.narrow { grid-template-columns: 240px 1fr; }
+  .feature.narrow figure img { width: 240px; }
+  .cols2 { columns: 2; column-gap: 36px; }
+  .cols2 p { break-inside: avoid; }
+
+  /* Tables */
+  .table-card { background: var(--surface); border: 1px solid var(--rule); border-radius: 16px; overflow: hidden; box-shadow: var(--shadow); }
+  table { width: 100%; border-collapse: collapse; font-size: 15px; }
+  th, td { text-align: left; vertical-align: top; padding: 12px 16px; border-bottom: 1px solid var(--rule); }
+  tr:last-child td { border-bottom: 0; }
+  th { font-size: 12px; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); font-weight: 600; background: color-mix(in srgb, var(--rule) 35%, transparent); }
+  td:first-child { font-weight: 600; width: 42%; }
+  td.keys { white-space: nowrap; width: 30%; }
+
+  /* Checklist */
+  .check { list-style: none; padding: 0; margin: 0; }
+  .check li { position: relative; padding: 0 0 12px 34px; }
+  .check li::before {
+    content: ""; position: absolute; left: 0; top: 3px; width: 20px; height: 20px; border-radius: 6px;
+    background: var(--accent-soft) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3 3 7-7' fill='none' stroke='%23e07a10' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/16px no-repeat;
+  }
+
+  /* FAQ */
+  details {
+    background: var(--surface); border: 1px solid var(--rule); border-radius: 14px; margin: 0 0 10px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .04);
+  }
+  summary {
+    cursor: pointer; list-style: none; padding: 16px 52px 16px 20px; font-weight: 600; position: relative;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::after {
+    content: "+"; position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
+    font: 400 24px/1 -apple-system, sans-serif; color: var(--accent); transition: transform .2s;
+  }
+  details[open] summary::after { transform: translateY(-50%) rotate(45deg); }
+  details > div { padding: 0 20px 6px; color: var(--muted); }
+
+  .note {
+    border-left: 4px solid var(--accent); background: var(--accent-soft);
+    padding: 14px 18px 2px; border-radius: 0 12px 12px 0; margin: 24px 0;
+  }
+
+  /* Contact */
+  .contact {
+    margin: 80px 0 0; border-radius: 22px; padding: 48px 40px; color: var(--hero-text);
+    background:
+      radial-gradient(600px 300px at 85% 10%, rgba(255, 148, 36, .25), transparent 70%),
+      var(--hero-bg);
+    display: grid; grid-template-columns: 1fr auto; gap: 28px; align-items: center;
+  }
+  .contact h2 { color: var(--hero-text); }
+  .contact p { color: var(--hero-muted); max-width: 36em; }
+  .contact ul { color: var(--hero-muted); padding-left: 1.1em; margin: 0 0 10px; }
+
+  footer.site { color: var(--muted); font-size: 13.5px; padding: 40px 0 56px; }
+  footer.site a { color: var(--muted); }
+
+  @media (max-width: 900px) {
+    .hero .wrap, .split, .split.left, .tour, .feature, .feature.narrow, .colours, .contact { grid-template-columns: 1fr; }
+    .feature.flip > figure { order: 0; }
+    .hero .shot img { width: 100%; max-width: 420px; transform: none; }
+    .tour .shot { position: static; }
+    .tour .shot, .tour .shot img { max-width: 384px; width: 100%; }
+    .g3, .sources { grid-template-columns: 1fr; }
+    .legend, .cols2 { columns: 1; }
+    .contact { padding: 32px 22px; }
+    section { padding-top: 56px; }
+  }
+  @media (max-width: 640px) {
+    .g2 { grid-template-columns: 1fr; }
+    td:first-child { width: auto; }
+    th, td { padding: 10px 12px; }
+    .top nav a { padding: 6px 7px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#"><img src="images/icon.png" alt=""><span>Swing &amp; Sweet</span></a>
+    <nav>
+      <a href="#start">Getting started</a>
+      <a href="#panel">The panel</a>
+      <a href="#sources">Sources</a>
+      <a href="#player">The player</a>
+      <a href="#questions">Questions</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <div>
+      <p class="eyebrow">Support</p>
+      <h1>Every track at the right level, all night.</h1>
+      <p class="lede">Swing &amp; Sweet is a sound leveler for DJs who play <strong>vintage jazz and blues for dancing</strong>.
+        It evens out old and new recordings, tames harsh horns, cleans up worn 78s and keeps the peaks safe for the
+        PA, from Spotify, Music, YouTube, DJ software or its own player.</p>
+      <div class="buttons">
+        <a class="btn primary" href="mailto:christianmb@gmail.com?subject=Swing%20%26%20Sweet">Email support</a>
+        <a class="btn ghost" href="#start">Getting started</a>
+        <a class="btn ghost" href="#questions">Questions</a>
+      </div>
+      <ul class="facts">
+        <li>Mac with Apple silicon</li>
+        <li>macOS 14.2 or later</li>
+        <li>No subscription</li>
+        <li>Nothing recorded</li>
+      </ul>
+    </div>
+    <div class="shot"><img src="images/panel.png" width="384" height="374" alt="The Swing & Sweet front panel while playing"></div>
+  </div>
+</div>
+
+<main class="wrap">
+
+<!-- What it does -->
+<section id="what">
+  <p class="kicker">What it does</p>
+  <h2>A sound engineer for the dance floor</h2>
+  <p class="intro">A 1928 transfer and a 2019 remaster can sit 10&nbsp;dB apart and sound like they come from different
+    planets. Swing &amp; Sweet listens 2.5 seconds ahead of what the dancers hear and quietly fixes each track before it
+    reaches the room, so you can set the mixer once and pay attention to the floor.</p>
+  <div class="grid g3">
+    <div class="card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 18V9M9 18V5M14 18v-7M19 18V8"/><path d="M3 13h18" stroke-dasharray="2 3"/></svg></div>
+      <h3>Leveling</h3>
+      <p>Every track comes out at the same loudness, without squashing it. Breaks and stop-time are never lifted, and a
+        quiet solo is lifted from its first note once the app knows the track.</p>
+    </div>
+    <div class="card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12c2-6 4-6 6 0s4 6 6 0 4-6 6 0"/></svg></div>
+      <h3>Harshness and tone</h3>
+      <p>Shrill trumpets and boxy old recordings are smoothed only when they need it, and bass is kept steady from
+        track to track.</p>
+    </div>
+    <div class="card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/><path d="M12 3v3M21 12h-3"/></svg></div>
+      <h3>Restore</h3>
+      <p>Removes clicks and crackle and lowers hiss on worn 78 transfers. In Auto it decides per track, early, and
+        never switches off in the middle of one.</p>
+    </div>
+    <div class="card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18M5 20V9l7-5 7 5v11"/><path d="M9 20v-6h6v6"/></svg></div>
+      <h3>Room and Ambience</h3>
+      <p>Room fits the sound to a boomy hall or a damped room full of people. Ambience adds a touch of space to very
+        dry recordings.</p>
+    </div>
+    <div class="card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18"/><path d="M4 18c2-9 4-9 6-3s3 4 4 0 3-7 6 3"/></svg></div>
+      <h3>Safe peaks</h3>
+      <p>A true-peak limiter protects the PA. <span class="ui">Limiter only</span> gives one track just the level
+        match and the limiter, for the rare recording where you want it untouched.</p>
+    </div>
+    <div class="card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.5 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/></svg></div>
+      <h3>It learns your tracks</h3>
+      <p>Each play leaves a few numbers about the track: its level, breaks and solos. Next time the
+        <span class="ui">Known</span> light is on and the track is right from the first second.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Getting started -->
+<section id="start">
+  <p class="kicker">Getting started</p>
+  <h2>Up and running in a minute</h2>
+  <div class="split">
+    <div>
+      <h3 style="margin-bottom:12px">What you need</h3>
+      <ul class="check">
+        <li>A Mac with Apple silicon (M1 or later) and macOS 14.2 or later.</li>
+        <li>Music: Spotify, Music, YouTube in a browser, another player or DJ program, or your own files in the built-in player.</li>
+        <li>At a dance: a cable from the Mac's headphone jack to a <em>line</em> input on the mixer (not a microphone input).</li>
+      </ul>
+      <h3 style="margin:22px 0 14px">Four steps</h3>
+      <ol class="steps">
+        <li><strong>Connect the PA.</strong> Headphone jack to a line input on the mixer.</li>
+        <li><strong>Start your music app</strong> and play a track. Set its own volume to 100&nbsp;% and its crossfade to 0&nbsp;s.</li>
+        <li><strong>Press <span class="ui">Power</span>.</strong> The first time, macOS asks for <em>System Audio
+          Recording</em> (so Swing &amp; Sweet can take the music app's sound; nothing is recorded) and, for Spotify and
+          Music, <em>Automation</em> (so it notices pause, skip and seek). Allow both.</li>
+        <li><strong>Set the mixer gain once, by ear.</strong> Every track now comes out at the same loudness, so that one
+          setting holds for the evening.</li>
+      </ol>
+      <p class="muted">The first Power on offers the free 14-day trial. Pressed with music playing, the music goes on
+        after a very short break and the processed sound fades in over the next minute; pressed in a pause, the first
+        track starts processed.</p>
+    </div>
+    <figure>
+      <img src="images/panel-off.png" width="384" height="374" alt="The front panel with Power off">
+      <figcaption>With Power off, your music app plays as it normally does, and the status line says where the sound
+        will go when you press Power.</figcaption>
+      <img src="images/menubar.png" width="290" height="130" alt="The menu bar popover with Power, the status line, Show panel and Quit" style="margin-top:26px">
+      <figcaption>Power and the status line are also in the menu bar. Closing the panel does not stop the sound.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- The front panel -->
+<section id="panel">
+  <p class="kicker">The front panel</p>
+  <h2>Everything you need during a set</h2>
+  <p class="intro">Each number has a <span class="ui">− | +</span> switch: one press is one step, holding it repeats, and
+    a double-click on the number returns it to its default.</p>
+  <div class="tour">
+    <div class="shot">
+      <div class="frame">
+        <img src="images/panel.png" width="384" height="374" alt="The front panel with numbered callouts">
+        <span class="badge" style="left:63.7%;top:4.0%">1</span>
+        <span class="badge" style="left:70.2%;top:4.0%">2</span>
+        <span class="badge" style="left:76.3%;top:4.0%">3</span>
+        <span class="badge" style="left:97.5%;top:13.5%">4</span>
+        <span class="badge" style="left:0;top:21.4%">5</span>
+        <span class="badge" style="left:0;top:30.1%">6</span>
+        <span class="badge" style="left:0;top:38.6%">7</span>
+        <span class="badge" style="left:0;top:53.1%">8</span>
+        <span class="badge" style="left:73.4%;top:49.5%">9</span>
+        <span class="badge" style="left:97.4%;top:19.7%">10</span>
+        <span class="badge" style="left:0;top:68.5%">11</span>
+        <span class="badge" style="left:0;top:77.0%">12</span>
+        <span class="badge" style="left:24.1%;top:83.0%">13</span>
+        <span class="badge" style="left:0;top:93.8%">14</span>
+        <span class="badge" style="left:57.4%;top:4.0%">15</span>
+      </div>
+      <p class="muted" style="font-size:14px;margin-top:14px"><span class="ui">Window → Keep Panel on Top</span>
+        (<kbd>⌥⌘T</kbd>) keeps the panel above Spotify and every other window, also in full screen.</p>
+    </div>
+    <div class="legend">
+      <div class="item"><span class="n">1</span><div><h4>Manual</h4><p>The full manual, inside the app.</p></div></div>
+      <div class="item"><span class="n">2</span><div><h4>Setup</h4><p>Source, output and learning (<kbd>⌘,</kbd>).</p></div></div>
+      <div class="item"><span class="n">3</span><div><h4>Engineer panel</h4><p>Readouts and settings for a sound engineer (<kbd>⇧⌘E</kbd>). Not needed to play.</p></div></div>
+      <div class="item"><span class="n">4</span><div><h4>Power</h4><p>Processing on and off. Green while processing, amber while starting or waiting, red after a problem. Off plays your music app unprocessed.</p></div></div>
+      <div class="item"><span class="n">5</span><div><h4>Leveling</h4><p>How firmly the level is held, from Soft (0) to Strict (9); 5 by default. Lower keeps more of the difference between a quiet trio and a loud big band.</p></div></div>
+      <div class="item"><span class="n">6</span><div><h4>Room</h4><p>From Padded 3 through Neutral to Boomy 3. Boomy takes bass and low mids down in a reverberant hall; Padded brings warmth and air back in a damped room.</p></div></div>
+      <div class="item"><span class="n">7</span><div><h4>Ambience</h4><p>A small room added to a very dry recording, from a hint (1) to clearly there (3).</p></div></div>
+      <div class="item"><span class="n">8</span><div><h4>Restore</h4><p>Off, Auto (recommended) or On. Clicks, crackle and hiss on poor recordings, only as much as each needs.</p></div></div>
+      <div class="item"><span class="n">9</span><div><h4>Limiter only</h4><p>This track gets only the level match and the limiter. Remembered for its next play; switching is a short crossfade, never a click.</p></div></div>
+      <div class="item"><span class="n">10</span><div><h4>Volume</h4><p>The Mac's own volume, the one the volume keys move. Above 0 the app adds up to 6&nbsp;dB for a weak PA.</p></div></div>
+      <div class="item"><span class="n">11</span><div><h4>In and Out</h4><p>Loudness against the target, the larger LED. Out should sit around it, whatever In does.</p></div></div>
+      <div class="item"><span class="n">12</span><div><h4>Lights</h4><p>Level: how hard the compressor works. Limit: a peak caught. Restore: active on this track. Known: the app has notes on this track.</p></div></div>
+      <div class="item"><span class="n">13</span><div><h4>Vol-mem. this track</h4><p>This track a little higher or lower, −6 to +6&nbsp;dB, remembered for the next time it plays.</p></div></div>
+      <div class="item"><span class="n">14</span><div><h4>Status line</h4><p>Where the sound goes, or what to do. Click it to open Setup.</p></div></div>
+      <div class="item"><span class="n">15</span><div><h4>The player</h4><p>Turns the panel into the <a href="#player">built-in player</a> (<kbd>⌥⌘L</kbd>).</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Sources -->
+<section id="sources">
+  <p class="kicker">Sources</p>
+  <h2>Play from the app you already use</h2>
+  <p class="intro">Swing &amp; Sweet takes the sound of one app directly, with no extra drivers, and silences that
+    app's own output while it runs, so only the processed sound is heard. Choose the app in Setup → Source; any app
+    that is making sound shows up there within a couple of seconds.</p>
+  <div class="sources">
+    <div class="source">
+      <header><h3>Spotify and Apple Music</h3><span class="pill full">Fully followed</span></header>
+      <p>Pause, skip and seek are followed at once, and the app remembers each track: its notes, its Vol-mem. and
+        Limiter only.</p>
+      <ul>
+        <li>Spotify: in the devices menu choose <em>This computer</em>, crossfade 0&nbsp;s, Automix off, volume 100&nbsp;%.</li>
+        <li>Music: play to this Mac, not to an AirPlay speaker.</li>
+      </ul>
+    </div>
+    <div class="source">
+      <header><h3>YouTube and other sites</h3><span class="pill sound">From the sound</span></header>
+      <p>Choose the browser in Setup (Google Chrome, Firefox, Safari and so on). Track changes are found from the
+        silences between tracks, so a pause is heard as a silence and no track notes are kept.</p>
+      <ul>
+        <li>Every tab of the browser is processed: close the ones you do not need.</li>
+        <li>Adverts and autoplay gaps count as silences, and are levelled like music.</li>
+      </ul>
+    </div>
+    <div class="source">
+      <header><h3>Other players</h3><span class="pill sound">From the sound</span></header>
+      <p>A file player, TIDAL, VLC or any other app is listed while it plays. Music that begins after a silence of
+        about 4.5&nbsp;s starts processed within half a second; between two tracks that follow each other it comes
+        about 2.5&nbsp;s after you press play.</p>
+    </div>
+    <div class="source">
+      <header><h3>DJ software</h3><span class="pill try">Try it at home first</span></header>
+      <p>djay, Traktor, Serato, Virtual DJ, Mixxx and similar programs are listed like any other app, but they have not
+        been tested yet. Swing &amp; Sweet works from their sound; a fade-out with a fader is followed and never lifted
+        by more than about 2&nbsp;dB.</p>
+      <ul>
+        <li>If the program sends a headphone cue to the same Mac, the cue may be silenced or mixed into the room: check before a dance.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="split left" style="margin-top:48px">
+    <figure>
+      <img src="images/setup.png" width="384" height="567" alt="The Setup window with Source, Output, Learning and Data">
+      <figcaption>Setup: the source, the output, alert sounds, learning and the log.</figcaption>
+    </figure>
+    <div>
+      <h3>Where the sound goes</h3>
+      <div class="table-card" style="margin:12px 0 26px">
+        <table>
+          <tr><th>Output</th><th>When to use it</th></tr>
+          <tr><td>Headphones (the jack)</td><td>The normal choice at a dance: a cable from the headphone jack to the mixer. If no cable is in the jack, the status line says so.</td></tr>
+          <tr><td>Same as the system output</td><td>For a Sonos or another AirPlay speaker, mostly at home. Pick the speaker in Control Center → Sound and Swing &amp; Sweet follows it.</td></tr>
+          <tr><td>A named device</td><td>A USB audio interface or any other output the Mac lists. Bluetooth speakers are marked.</td></tr>
+        </table>
+      </div>
+      <p class="muted">AirPlay adds about 2&nbsp;s of delay and Bluetooth up to about a second, so pause and skip are
+        heard that much later. Fine at home; at a dance, use the jack.</p>
+      <h3 style="margin-top:26px">Notifications stay off the PA</h3>
+      <p class="muted">While it runs, Swing &amp; Sweet moves the Mac's alert sounds to the built-in speakers and moves them
+        back when it stops. Other apps' own sounds (a call, a video) are not touched: turn on Focus (Do Not Disturb)
+        for the evening.</p>
+      <h3 style="margin-top:26px">Learning</h3>
+      <p class="muted"><span class="ui">Learn while playing</span> is on by default and changes nothing you hear.
+        <span class="ui">Delete all notes…</span> starts again from nothing. Notes are numbers only, never sound.</p>
+    </div>
+  </div>
+</section>
+
+<!-- The player -->
+<section id="player">
+  <p class="kicker">The built-in player</p>
+  <h2>Run the whole evening from one window</h2>
+  <p class="intro">For a set from your own music files, without Spotify or a DJ program. Press the list icon on the
+    panel or <kbd>⌥⌘L</kbd>, and the panel turns into the player in the same window. Press Play and the processing turns
+    itself on: you never press Power here. Because the player knows its files, every track starts at once and the gap
+    between tracks is exact.</p>
+
+  <figure class="player-hero">
+    <a href="images/player.jpg"><img src="images/player.jpg" width="1440" height="800" alt="The Swing & Sweet player with the library, Up Next, the pre-listen bar and the sound card"></a>
+    <figcaption>The player with an example library: the room's track at the top, the library in the middle, Up Next on
+      the right, pre-listen at the bottom and the sound along the right edge.</figcaption>
+  </figure>
+
+  <div class="colours">
+    <div class="colour room">
+      <h3>Amber is the room</h3>
+      <p>The track at the top, Up Next, Play and Stop: what the dancers hear. No key starts music in the room; only the
+        Play button does.</p>
+    </div>
+    <div class="colour ear">
+      <h3>Blue is only your headphones</h3>
+      <p>The pre-listen bar at the bottom. Nothing blue ever reaches the room.</p>
+    </div>
+  </div>
+
+  <div class="feature full">
+    <figure><img src="images/player-top.jpg" width="1176" height="124" alt="The top bar: the track in the room, time left, Stop, End after this track and Next now"></figure>
+    <div class="text cols2">
+      <p><strong>In the room.</strong> The track playing for the dancers, its tempo and a TAP key. The time left is
+        large, so you see it from across the booth.</p>
+      <p><strong>Stop, Next now and End after this track.</strong> Next now cuts the track and starts the next one. End
+        after this track lets the room go quiet when the track ends, for an announcement, and switches itself off.</p>
+      <p><strong>Seek in the room.</strong> A click on the bar under the time plays the track from there; the small keys
+        play it from the start, 10&nbsp;s back or 10&nbsp;s on. The processing catches up as after a seek in Spotify.</p>
+      <p><strong>Its shape.</strong> Once a track is analysed, its bar shows how loud it is through the music: a quiet
+        intro, a break or a loud last chorus, to click straight to.</p>
+    </div>
+  </div>
+
+  <div class="feature">
+    <figure><img src="images/player-library.jpg" width="772" height="548" alt="The library with search, BPM and tag filters, and the Sound column"></figure>
+    <div class="text">
+      <h3>Your library</h3>
+      <p><strong>Add Music Folder…</strong> reads a folder and its subfolders: MP3, AAC, Apple Lossless, FLAC, WAV and
+        AIFF. The files stay where they are and are never changed.</p>
+      <ul>
+        <li><strong>Search</strong> every word in title, artist, album or tag.</li>
+        <li><strong>Filter</strong> by a BPM range, by tags, and <em>Hide played tonight</em>. Click a tag on a track
+          to filter by it; <em>+</em> adds a tag to every selected track.</li>
+        <li><strong>Sort</strong> by any column: year, length, BPM, artist.</li>
+        <li>A track already in Up Next shows its place there in amber after its title.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="feature flip">
+    <figure><img src="images/player-sound.jpg" width="508" height="378" alt="The Sound column: the lift, the grade bars and an R for Restore"></figure>
+    <div class="text">
+      <h3>The Sound column</h3>
+      <p>In the background Swing &amp; Sweet listens to your whole library, one file at a time, through the same
+        processing the room uses (about four seconds per track on an M1). Then, before a track has ever played, you
+        can see:</p>
+      <ul>
+        <li><strong>The lift:</strong> +10 is a quiet old record raised 10&nbsp;dB, −3 a loud modern one turned down.</li>
+        <li><strong>The grade:</strong> one red bar is poor, two orange rough, three yellow fair, four green good.</li>
+        <li><strong>An amber R</strong> when Restore in Auto will take the track. Click it for the details in words.</li>
+      </ul>
+      <p>The analysis also gives the room its note of the track, so it plays at the right level from the first second
+        of its first play. Pause the analysis during a dance on a small Mac, and let it run overnight.</p>
+    </div>
+  </div>
+
+  <div class="feature narrow">
+    <figure><img src="images/player-upnext.jpg" width="240" height="569" alt="Up Next with the tempo curve, the next three tracks and Later"></figure>
+    <div class="text">
+      <h3>Up Next</h3>
+      <p>Drag tracks to Up Next, or select them and press <kbd>Return</kbd>. The first three are what comes next; the
+        rest wait under Later. Drag to reorder; <kbd>Delete</kbd> or the ✕ takes one out.</p>
+      <ul>
+        <li><strong>Planning the set.</strong> The top says how many tracks, how long, and when the queue will have played
+          (<em>ends 18:13</em>), with a small curve of the tempo through the set.</li>
+        <li><strong>Gentle marks.</strong> A track gets a small mark when it has the same artist as the one before, or a
+          tempo more than about a third away from it. Nothing is stopped; it is only for you to see.</li>
+        <li><strong>Pause between tracks</strong> is the silence between two tracks, 2&nbsp;s to start with. An optional
+          crossfade (2 to 8&nbsp;s) is under Engineer, off by default.</li>
+        <li><strong>Playlists.</strong> <em>Save as Playlist…</em> keeps tonight's list. Playlists are written as M3U8 for
+          other players and read in from them (<em>Import Playlist…</em>).</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="feature full">
+    <figure><img src="images/player-prelisten.jpg" width="1176" height="125" alt="The pre-listen bar: a small player for the headphones, the track's shape, the headphones' level and TAP"></figure>
+    <div class="text cols2">
+      <p><strong>Pre-listen.</strong> Double-click a track, or select it and press <kbd>Space</kbd>, to hear it in your
+        headphones. Click the bar to jump into the middle; the small player has previous, back 10&nbsp;s, play/pause,
+        stop, forward 10&nbsp;s and next, and <kbd>[</kbd> <kbd>]</kbd> step through the list as it is shown.</p>
+      <p><strong>At the room's level.</strong> The headphones are not processed, but once a track is analysed they get
+        the lift the room will give it, so a quiet old record sounds about as loud in your ears as on the floor. A
+        limiter keeps a lifted track from clipping in your ears.</p>
+      <p><strong>Headphones of their own.</strong> Pre-listen needs a device of its own, such as Bluetooth headphones or
+        a USB headphone adapter: the Mac's jack goes to the room. Choose them by name; their level has its own − and +.</p>
+      <p><strong>Tempo, the way swing DJs count.</strong> BPM in quarter notes per minute, measured or taken from the
+        tag; an unsure value has a <em>?</em>. TAP in time (or press <kbd>T</kbd>) to fix it, <em>×2</em> and
+        <em>÷2</em> for a tempo counted in halves, <em>Right</em> to confirm. Every tempo you confirm teaches the
+        analysis what swing sounds like in your music.</p>
+    </div>
+  </div>
+
+  <div class="feature narrow flip" style="grid-template-columns:1fr 240px">
+    <figure><img src="images/player-card.jpg" width="240" height="727" alt="The sound card along the right edge of the player"></figure>
+    <div class="text">
+      <h3>The sound card</h3>
+      <p>The panel's controls, standing up along the right edge: Leveling, Room, Ambience, Restore, Limiter only, the
+        meters In and Out with their lights, and Vol-mem. for this track. Volume is at the bottom, with
+        <kbd>⌘↑</kbd> and <kbd>⌘↓</kbd>.</p>
+      <p><strong>Engineer</strong> (<kbd>⇧⌘E</kbd>) unfolds the engineer panel under it. The card has no Power key:
+        Play turns the processing on, and the light by the name shows it.</p>
+      <h3 style="margin-top:28px">If something goes wrong</h3>
+      <p>The player has no unprocessed fallback: if Swing &amp; Sweet stops, the room goes quiet. When it opens again it
+        offers to go on from there, with the same Up Next and the track where it was.</p>
+      <p><strong>Names from the files.</strong> When tracks have no artist tag but their file names say it
+        (<em>1924 Ma Rainey - Lucky Rock Blues</em>), the player offers to use the names. The files are never
+        changed.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Before the first dance -->
+<section id="evening">
+  <p class="kicker">Before the first dance</p>
+  <h2>A checklist for the evening</h2>
+  <div class="grid g2" style="margin-top:24px">
+    <div class="card">
+      <ul class="check">
+        <li>System Settings → Sound: keep <em>Output</em> on Headphones (the jack). Your music app then plays on there if anything fails.</li>
+        <li>Leave <em>Keep notification sounds off the output</em> on in Setup.</li>
+        <li>Turn on Focus (Do Not Disturb) and quit other apps that make sound.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <ul class="check">
+        <li>Spotify: crossfade 0&nbsp;s, Automix off, highest quality, volume 100&nbsp;%.</li>
+        <li>With a mixer, Volume at 0 and the level on the mixer's fader. Without one, set the speakers once and use Volume as your fader.</li>
+        <li>Keep a reserve source on its own mixer channel, such as a phone with a playlist.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="note">
+    <p><strong>If something goes wrong, the music does not stop.</strong> If Swing &amp; Sweet quits or hangs (a
+      watchdog ends a hang within half a second) or you press Power off, your music app plays on, unprocessed, on the
+      jack. The built-in player is the exception: it is part of the app.</p>
+  </div>
+</section>
+
+<!-- Questions -->
+<section id="questions">
+  <p class="kicker">Questions</p>
+  <h2>Common questions</h2>
+  <div style="margin-top:24px">
+    <details>
+      <summary>The status line says “Could not start”</summary>
+      <div><p>Usually the System Audio Recording permission is missing. Open System Settings → Privacy &amp; Security →
+        System Audio Recording (in some macOS versions: Screen &amp; System Audio Recording), allow Swing &amp; Sweet and
+        press Power again.</p></div>
+    </details>
+    <details>
+      <summary>Pause and skip in Spotify or Music are not followed</summary>
+      <div><p>Allow Automation: System Settings → Privacy &amp; Security → Automation → Swing &amp; Sweet, and turn on
+        Spotify or Music. Browsers and other apps have no such link; there Swing &amp; Sweet works from the sound and
+        hears a pause as a silence.</p></div>
+    </details>
+    <details>
+      <summary>Spotify plays, but nothing reaches Swing &amp; Sweet</summary>
+      <div><p>Spotify is sending the music straight to a speaker (Spotify Connect), past the Mac. In Spotify's devices
+        menu (the speaker icon at the bottom), choose <em>This computer</em>. The status line says so after 5&nbsp;seconds.</p></div>
+    </details>
+    <details>
+      <summary>My app is missing from the source list</summary>
+      <div><p>Start its music: it appears within a couple of seconds, and stays in the list for 10 minutes after it
+        stops, so you can pause it and then choose it. For YouTube, choose the browser. Background services never
+        appear.</p></div>
+    </details>
+    <details>
+      <summary>The sound stutters or drops out</summary>
+      <div><p>The Mac could not keep up; the status line then says <em>Too much load</em>. Quit other heavy apps and press
+        Power again. On a small Mac, pause the player's library analysis during the dance. If it happens again,
+        write to me with the time and what else was running.</p></div>
+    </details>
+    <details>
+      <summary>A track sounds wrong after processing</summary>
+      <div><p>Press <span class="ui">Limiter only</span>: that track then gets only the level match and the limiter, and
+        it is remembered for its next play. Please write and tell me the track, the source and what you heard, so I can
+        make it better.</p></div>
+    </details>
+    <details>
+      <summary>A notification sound reached the sound system</summary>
+      <div><p>Swing &amp; Sweet moves the Mac's alert sounds to the built-in speakers, but other apps can still play
+        sounds of their own: a call, a calendar alarm, a video. Turn on Focus (Do Not Disturb) before the dance and allow
+        no people and no apps.</p></div>
+    </details>
+    <details>
+      <summary>Pre-listen has no headphones to choose</summary>
+      <div><p>Pre-listen needs headphones on a device of their own, such as Bluetooth headphones or a USB headphone
+        adapter. The Mac's own jack goes to the room, so it is never used for pre-listen, and neither is AirPlay.</p></div>
+    </details>
+    <details>
+      <summary>Can I play to AirPlay, Sonos or Bluetooth speakers?</summary>
+      <div><p>Yes, mostly at home. In Spotify choose <em>This computer</em>, in Control Center → Sound pick the speaker, and
+        in Setup → Output choose <em>Same as the system output</em>. Turn Volume down before you quit: without Swing
+        &amp; Sweet the music plays a little louder.</p></div>
+    </details>
+    <details>
+      <summary>Does Swing &amp; Sweet record or upload my music?</summary>
+      <div><p>No. It holds a few seconds of sound in memory to process it, and never stores audio. It makes no network
+        connections of its own and has no analytics or tracking. The numbers it keeps per track stay on your Mac. See
+        the <a href="./">privacy policy</a>.</p></div>
+    </details>
+  </div>
+
+  <h3 style="margin:44px 0 14px">What the status line tells you</h3>
+  <div class="table-card">
+    <table>
+      <tr><th>The status line says</th><th>What to do</th></tr>
+      <tr><td>Spotify → Headphones</td><td>All is well: processed sound is going to that output.</td></tr>
+      <tr><td>Waiting for Spotify to play on this Mac</td><td>Start a track in Spotify, playing on this Mac.</td></tr>
+      <tr><td>No cable in the headphone jack</td><td>Plug in the minijack, or choose another output in Setup.</td></tr>
+      <tr><td>Too much load: Spotify plays unprocessed</td><td>Quit other heavy apps and press Power again.</td></tr>
+      <tr><td>System output is “…”: Spotify plays there if this stops</td><td>Set System Settings → Sound → Output to Headphones, so the music stays on the jack if something fails.</td></tr>
+      <tr><td>Spotify's own volume is 70: set it to 100</td><td>Turn the player's own volume up to full.</td></tr>
+      <tr><td>Volume is all the way down</td><td>Raise Volume, or press the volume keys.</td></tr>
+    </table>
+  </div>
+
+  <h3 style="margin:44px 0 14px">Keyboard shortcuts</h3>
+  <div class="table-card">
+    <table>
+      <tr><th>Keys</th><th>Action</th></tr>
+      <tr><td class="keys"><kbd>⇧⌘P</kbd></td><td>Power on or off</td></tr>
+      <tr><td class="keys"><kbd>⌥⌘L</kbd></td><td>The player</td></tr>
+      <tr><td class="keys"><kbd>⌥⌘T</kbd></td><td>Keep Panel on Top</td></tr>
+      <tr><td class="keys"><kbd>⇧⌘E</kbd></td><td>Engineer panel</td></tr>
+      <tr><td class="keys"><kbd>⇧⌘B</kbd></td><td>Blind A/B: processed against original, without knowing which is which</td></tr>
+      <tr><td class="keys"><kbd>Space</kbd> <kbd>Return</kbd> <kbd>T</kbd></td><td>In the player: pre-listen the selected track, add it to Up Next, tap the tempo</td></tr>
+      <tr><td class="keys"><kbd>[</kbd> <kbd>]</kbd></td><td>In the player: pre-listen the previous or next track of the list</td></tr>
+      <tr><td class="keys"><kbd>⌘↑</kbd> <kbd>⌘↓</kbd></td><td>Volume up or down</td></tr>
+      <tr><td class="keys"><kbd>⌘,</kbd></td><td>Setup</td></tr>
+      <tr><td class="keys"><kbd>⌘?</kbd></td><td>The manual</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- Purchases -->
+<section id="purchases">
+  <p class="kicker">Purchases</p>
+  <h2>Try it free, buy it once</h2>
+  <div class="grid g3" style="margin-top:24px">
+    <div class="card"><h3>14 days free</h3><p>The first Power on offers a free trial with everything working. It never
+      turns into a purchase by itself, and it never ends in the middle of an evening: it is only checked when you press
+      Power.</p></div>
+    <div class="card"><h3>One purchase</h3><p>After the trial, one purchase unlocks Swing &amp; Sweet for good: one per
+      Apple ID, for all your Macs. No subscription.</p></div>
+    <div class="card"><h3>A new Mac</h3><p>Use Setup → Purchase → <em>Restore Purchases</em>. Payments and refunds are
+      handled by Apple at <a href="https://reportaproblem.apple.com">reportaproblem.apple.com</a>.</p></div>
+  </div>
+</section>
+
+<!-- Contact -->
+<div class="contact" id="contact">
+  <div>
+    <h2>Still stuck, or something sounds wrong?</h2>
+    <p>Write to Christian Melby Bjørn, who makes Swing &amp; Sweet. It helps to include:</p>
+    <ul>
+      <li>the track, and the source (Spotify, Music, the player, a browser or another app);</li>
+      <li>the output (the jack, AirPlay, Bluetooth, a USB interface) and your Mac and macOS version;</li>
+      <li>what you heard, and when. Tools → Show Logs in Finder has logs you can attach (numbers and track names, never sound).</li>
+    </ul>
+  </div>
+  <a class="btn primary" href="mailto:christianmb@gmail.com?subject=Swing%20%26%20Sweet">christianmb@gmail.com</a>
+</div>
+
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <p><a href="./">Privacy policy</a> · © 2026 Christian Melby Bjørn</p>
+    <p>Spotify and Apple Music are trademarks of their owners. Swing &amp; Sweet is not affiliated with or endorsed by
+      Spotify or Apple.</p>
+  </div>
+</footer>
+
+</body>
+</html>
