@@ -203,6 +203,7 @@
   .feature .text strong { color: var(--text); }
   .feature .text ul { padding-left: 1.1em; }
   .feature.narrow { grid-template-columns: 240px 1fr; }
+  .feature.narrow.flip { grid-template-columns: 1fr 240px; }
   .feature.narrow figure img { width: 240px; }
   .cols2 { columns: 2; column-gap: 36px; }
   .cols2 p { break-inside: avoid; }
@@ -261,7 +262,8 @@
   footer.site a { color: var(--muted); }
 
   @media (max-width: 900px) {
-    .hero .wrap, .split, .split.left, .tour, .feature, .feature.narrow, .colours, .contact { grid-template-columns: 1fr; }
+    .hero .wrap, .split, .split.left, .tour, .feature, .feature.narrow, .feature.narrow.flip, .colours, .contact { grid-template-columns: 1fr; }
+    .feature.narrow figure { justify-self: center; }
     .feature.flip > figure { order: 0; }
     .hero .shot img { width: 100%; max-width: 420px; transform: none; }
     .tour .shot { position: static; }
@@ -300,7 +302,8 @@
     <div>
       <p class="eyebrow">Support</p>
       <h1>Every track at the right level, all night.</h1>
-      <p class="lede">Swing &amp; Sweet is a sound leveler for DJs who play <strong>vintage jazz and blues for dancing</strong>.
+      <p class="lede">Swing &amp; Sweet is a sound leveler for <strong>vintage jazz and blues</strong>: for DJs at
+        socials, for teachers who want to dance with the class and not fix the sound, and for listening at home.
         It evens out the level between tracks and inside them, tames loud brass and hard drums, cleans up worn 78s and
         keeps the peaks safe for the PA, from Spotify, Music, YouTube, DJ software or its own player.</p>
       <div class="buttons">
@@ -326,7 +329,7 @@
   <p class="kicker">What it does</p>
   <h2>A sound engineer for the dance floor</h2>
   <p class="intro">A 1928 transfer and a 2019 remaster can sit 10&nbsp;dB apart and sound like they come from different
-    planets, and a single track can go from a whispered piano solo to a shout chorus. Ordinary volume normalization
+    planets, and a single track can go from a whispered piano solo to a shout chorus. Ordinary volume normalization (ReplayGain, Sound Check)
     gives each track one setting and leaves the track itself alone. Swing &amp; Sweet listens 2.5 seconds ahead of what
     the dancers hear and works on the music as it plays, between the tracks and inside each one, so you can set the
     mixer once and pay attention to the floor.</p>
@@ -352,9 +355,9 @@
     </div>
     <div class="card">
       <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18M5 20V9l7-5 7 5v11"/><path d="M9 20v-6h6v6"/></svg></div>
-      <h3>Room and Ambience</h3>
-      <p>Room fits the sound to the venue, from Padded 3 for a damped room full of people, through Neutral, to Boomy 3
-        for a reverberant hall. Ambience adds a touch of space to very dry recordings.</p>
+      <h3>Ambience</h3>
+      <p>A touch of space for a very dry recording, so it does not sound as if it is inside your head: from a hint (1)
+        to clearly there (3).</p>
     </div>
     <div class="card">
       <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18"/><path d="M4 18c2-9 4-9 6-3s3 4 4 0 3-7 6 3"/></svg></div>
@@ -396,8 +399,10 @@
         <li><strong>Connect the PA.</strong> Headphone jack to a line input on the mixer.</li>
         <li><strong>Start your music app</strong> and play a track. Set its own volume to 100&nbsp;% and its crossfade to 0&nbsp;s.</li>
         <li><strong>Press <span class="ui">Power</span>.</strong> The first time, macOS asks for <em>System Audio
-          Recording</em> (so Swing &amp; Sweet can take the music app's sound; nothing is recorded) and, for Spotify and
-          Music, <em>Automation</em> (so it notices pause, skip and seek). Allow both.</li>
+          Recording</em> (so Swing &amp; Sweet can take the music app's sound) and, for Spotify and Music,
+          <em>Automation</em> (so it notices pause, skip and seek). Allow both. “Recording” is Apple's name for any
+          access to another app's sound, saved or not: Swing &amp; Sweet processes the sound and plays it, and never
+          saves it.</li>
         <li><strong>Set the mixer gain once, by ear.</strong> Every track now comes out at the same loudness, so that one
           setting holds for the evening.</li>
       </ol>
@@ -468,13 +473,14 @@
 <section id="sources">
   <p class="kicker">Sources</p>
   <h2>Play from the app you already use</h2>
-  <p class="intro">Swing &amp; Sweet takes the sound of one app directly, with no extra drivers, and silences that
-    app's own output while it runs, so only the processed sound is heard. Choose the app in Setup → Source; any app
+  <p class="intro">Your music app plays the music as it always does. Swing &amp; Sweet takes the sound that app plays
+    on this Mac, processes it and passes it on to your output; it does not stream, download or store music. It needs
+    no extra drivers, and it silences the app's own output while it runs, so only the processed sound is heard. Choose the app in Setup → Source; any app
     that is making sound shows up there within a couple of seconds.</p>
   <div class="sources">
     <div class="source">
       <header><h3>Spotify and Apple Music</h3><span class="pill full">Fully followed</span></header>
-      <p>Pause, skip and seek are followed at once, and the app remembers each track: its notes, its Vol-mem. and
+      <p>Pause, skip and seek reach the room within about half a second, and the app remembers each track: its notes, its Vol-mem. and
         Limiter only.</p>
       <ul>
         <li>Spotify: in the devices menu choose <em>This computer</em>, crossfade 0&nbsp;s, Automix off, volume 100&nbsp;%.</li>
@@ -645,8 +651,8 @@
     </div>
   </div>
 
-  <div class="feature narrow flip" style="grid-template-columns:1fr 240px">
-    <figure><img src="images/player-card.jpg" width="240" height="727" alt="The sound card along the right edge of the player"></figure>
+  <div class="feature narrow flip">
+    <figure><img src="images/player-card.jpg" width="240" height="615" alt="The sound card along the right edge of the player"></figure>
     <div class="text">
       <h3>The sound card</h3>
       <p>The panel's controls, standing up along the right edge: Leveling, Room, Ambience, Restore, Limiter only, the
@@ -696,6 +702,49 @@
   <p class="kicker">Questions</p>
   <h2>Common questions</h2>
   <div style="margin-top:24px">
+    <details>
+      <summary>How is this different from ReplayGain or Sound Check?</summary>
+      <div><p>ReplayGain, Apple's Sound Check and the streaming apps' own volume normalization measure each track and
+        give it one volume setting for its whole length. Swing &amp; Sweet does that too, and then keeps working while
+        the track plays: a quiet solo is lifted and a loud shout chorus held back (breaks and stop-time are left
+        alone), harsh brass and hard drums are softened only while they are hard on the ears, clicks, crackle and hiss
+        on worn 78s are taken down, and a true-peak limiter keeps the PA safe. It works the same way on every source,
+        including YouTube in a browser and files that were never scanned or tagged.</p></div>
+    </details>
+    <details>
+      <summary>Is the sound delayed? (the 2.5-second lookahead)</summary>
+      <div><p>Swing &amp; Sweet listens 2.5 seconds ahead of what the room hears, so it can turn a loud entry down
+        before it arrives. What that means for you depends on the source:</p>
+        <ul>
+          <li><strong>Spotify, Music and the built-in player</strong> tell Swing &amp; Sweet when you pause, skip or
+            seek, so the room hears it within about half a second. While a track plays, their progress bar runs up to
+            2.5&nbsp;s ahead of the room.</li>
+          <li><strong>Other apps</strong> (a browser, VLC, DJ programs) tell it nothing, so the room hears everything
+            2.5&nbsp;s after you act: after a skip, 2.5&nbsp;s more of the old track; after a pause, 2.5&nbsp;s more
+            music. Music that starts after a silence of about 4.5&nbsp;s is heard within half a second.</li>
+          <li><strong>Always at once:</strong> Swing &amp; Sweet's own Volume, Vol-mem., Room, Limiter only and
+            Power. Fade out with Volume or the mixer, not with the music app's own slider, which is heard 2.5&nbsp;s
+            later.</li>
+          <li><strong>Announcements</strong> through the microphone are not delayed. Time them to what you hear in
+            the room, not to the app's progress bar.</li>
+        </ul>
+        <p>AirPlay adds about 2&nbsp;s on top and Bluetooth up to about a second; the headphone jack adds almost
+          nothing.</p></div>
+    </details>
+    <details>
+      <summary>Why does macOS ask for “System Audio Recording”?</summary>
+      <div><p>It is the only permission macOS has for one app to take another app's sound, and Apple calls it
+        recording whether or not anything is saved. Swing &amp; Sweet processes the sound in memory and plays it
+        straight out; it never writes it to disk or sends it anywhere.</p></div>
+    </details>
+    <details>
+      <summary>May I play Spotify or Apple Music at a dance?</summary>
+      <div><p>Swing &amp; Sweet only processes the sound your music app plays; it gives no right to play the music
+        in public. Streaming
+        services are licensed for personal use, and playing music to a room usually needs licences for the venue or
+        the event. Checking the streaming service's terms and the venue's music licences is the DJ's or the
+        organiser's responsibility.</p></div>
+    </details>
     <details>
       <summary>The status line says “Could not start”</summary>
       <div><p>Usually the System Audio Recording permission is missing. Open System Settings → Privacy &amp; Security →
