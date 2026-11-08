@@ -351,9 +351,8 @@
     <div class="card">
       <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/><path d="M12 3v3M21 12h-3"/></svg></div>
       <h3>Restore</h3>
-      <p>Removes clicks and crackle and lowers hiss on worn 78 transfers. In Auto every track starts cleaned, so a
-        worn record is clean from its first note; Auto lets go after two seconds without crackle, and once it keeps
-        cleaning it never switches off in the middle of a track.</p>
+      <p>Removes clicks and crackle and lowers hiss on worn 78 transfers. In Auto a worn record is cleaned from its
+        first note and a clean one is left as it is; once it cleans a track, it never stops in the middle of it.</p>
     </div>
     <div class="card">
       <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18M5 20V9l7-5 7 5v11"/><path d="M9 20v-6h6v6"/></svg></div>
@@ -502,15 +501,13 @@
     </div>
     <div class="source">
       <header><h3>Other players</h3><span class="pill sound">From the sound</span></header>
-      <p>A file player, TIDAL, VLC or any other app is listed while it plays. Music that begins after a silence of
-        about 4.5&nbsp;s starts processed within half a second; between two tracks that follow each other it comes
-        about 2.5&nbsp;s after you press play.</p>
+      <p>A file player, TIDAL, VLC or any other app is listed while it plays. The room hears what you do in it about
+        2.5&nbsp;s later (see the question about delay below).</p>
     </div>
     <div class="source">
       <header><h3>DJ software</h3><span class="pill try">Try it at home first</span></header>
       <p>djay, Traktor, Serato, Virtual DJ, Mixxx and similar programs are listed like any other app, but they have not
-        been tested yet. Swing &amp; Sweet works from their sound; a fade-out with a fader is followed and never lifted
-        by more than about 2&nbsp;dB.</p>
+        been tested yet. Swing &amp; Sweet works from their sound; a fade-out with a fader is followed, not undone.</p>
       <ul>
         <li>If the program sends a headphone cue to the same Mac, the cue may be silenced or mixed into the room: check before a dance.</li>
       </ul>
@@ -554,7 +551,7 @@
     between tracks is exact.</p>
 
   <figure class="player-hero">
-    <a href="images/player.jpg"><img src="images/player.jpg" width="1440" height="800" alt="The Swing & Sweet player with the library, Up Next, the pre-listen bar and the sound card"></a>
+    <a href="images/player.jpg?v=2"><img src="images/player.jpg?v=2" width="1440" height="800" alt="The Swing & Sweet player with the library, Up Next, the pre-listen bar and the sound card"></a>
     <figcaption>The player with an example library: the room's track at the top, the library in the middle, Up Next on
       the right, pre-listen at the bottom and the sound along the right edge.</figcaption>
   </figure>
@@ -606,7 +603,7 @@
     <div class="text">
       <h3>The Sound column</h3>
       <p>In the background Swing &amp; Sweet listens to your whole library, one file at a time, through the same
-        processing the room uses (about four seconds per track on an M1). Then, before a track has ever played, you
+        processing the room uses. Then, before a track has ever played, you
         can see:</p>
       <ul>
         <li><strong>The lift:</strong> +10 is a quiet old record raised 10&nbsp;dB, −3 a loud modern one turned down.</li>
@@ -656,7 +653,7 @@
   </div>
 
   <div class="feature narrow flip">
-    <figure><img src="images/player-card.jpg" width="240" height="615" alt="The sound card along the right edge of the player"></figure>
+    <figure><img src="images/player-card.jpg?v=2" width="240" height="615" alt="The sound card along the right edge of the player"></figure>
     <div class="text">
       <h3>The sound card</h3>
       <p>The panel's controls, standing up along the right edge: Leveling, Room, Ambience, Restore, Limiter only, the
@@ -688,22 +685,22 @@
       <p><strong>Choose where the copies go,</strong> one of your music folders if you want them in the library at
         once. Add recordings with <em>Add Files…</em>, by dropping files or folders on the window, or with
         <em>Restore a Copy…</em> on tracks in the library, and press <em>Start</em>.</p>
-      <p><strong>Each recording is measured first:</strong> the workshop tries settings on its hardest parts and keeps
-        the one that takes the most crackle and hiss without dulling the music. It ends as <em>Restored</em>,
+      <p><strong>Nothing to set:</strong> the workshop finds the strength for each recording that takes the most crackle
+        and hiss without dulling the music. It ends as <em>Restored</em>,
         <em>Restored: listen before you play it</em> (with the reason), or <em>Not restored</em> when even the gentlest
         setting would harm the music.</p>
-      <p><strong>Denoise:</strong> <em>Auto</em> (the default) tries the classical denoise and a trained model made for
-        historical recordings on those parts and keeps the one that takes more of the surface without harming the
-        music. <em>Classic</em> or <em>ML</em> uses one for every recording; right-click a track to give it its own.
-        The model runs on the Mac's Neural Engine, on the Mac itself.</p>
+      <p><strong>Denoise:</strong> <em>Auto</em> (the default) chooses, for each recording, between the classical denoise
+        and a trained model made for historical recordings, whichever does the better job. <em>Classic</em> or
+        <em>ML</em> uses one for every recording; right-click a track to give it its own. Everything runs on your
+        Mac.</p>
       <p><strong>Silence at the ends:</strong> how much of the quiet groove before and after the music the copy keeps,
         half a second unless you choose None up to 5&nbsp;s, or All for the whole length.</p>
       <p><strong>Finished copies</strong> (off unless you turn it on): each restored file also gets a copy in the
-        folder <em>Finished</em> beside it, levelled (<em>Leveling</em> Soft to Strict, as the panel's knob) and with
-        its harshness tamed (<em>Harshness</em> On or Off) as the room plays it, for other players and phones. The
-        room keeps playing the restored file and levels it live, so the player leaves the finished copies out.</p>
-      <p><strong>While music plays:</strong> <em>Pause</em> waits (best at a dance); <em>Gently</em> goes on on one
-        core, a little slower than the music plays. <em>Turbo</em> restores several recordings at once when you are
+        folder <em>Finished</em> beside it, levelled (<em>Leveling</em> Soft to Strict) and with its harshness
+        tamed as the room plays it, for other players and phones. The player itself plays the restored file, so the
+        finished copies stay out of the library.</p>
+      <p><strong>While music plays:</strong> <em>Pause</em> waits (best at a dance); <em>Gently</em> goes on slowly
+        without disturbing the music. <em>Turbo</em> restores several recordings at once when you are
         not playing; music switches it off.</p>
       <p>The copies are Apple Lossless, 24-bit, with the original's tags. In the player a restored track keeps the
         original's row and its restored copy is what plays.</p>
@@ -732,8 +729,8 @@
     </div>
   </div>
   <div class="note">
-    <p><strong>If something goes wrong, the music does not stop.</strong> If Swing &amp; Sweet quits or hangs (a
-      watchdog ends a hang within half a second) or you press Power off, your music app plays on, unprocessed, on the
+    <p><strong>If something goes wrong, the music does not stop.</strong> If Swing &amp; Sweet quits or hangs, or
+      you press Power off, your music app plays on, unprocessed, on the
       jack. The built-in player is the exception: it is part of the app.</p>
   </div>
 </section>
